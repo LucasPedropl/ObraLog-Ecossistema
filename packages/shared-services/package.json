@@ -1,0 +1,23 @@
+{
+	"name": "@obralog/shared-services",
+	"version": "1.0.0",
+	"description": "Shared services for ObraLog (Firebase integration)",
+	"main": "dist/index.js",
+	"types": "dist/index.d.ts",
+	"files": [
+		"dist"
+	],
+	"scripts": {
+		"build": "tsc",
+		"type-check": "tsc --noEmit"
+	},
+	"dependencies": {
+		"@obralog/shared-types": "workspace:*",
+		"firebase": "^10.14.1"
+	},
+	"devDependencies": {
+		"@types/node": "^20.0.0",
+		"typescript": "^5.2.2"
+	},
+	"private": true
+}

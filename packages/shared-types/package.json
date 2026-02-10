@@ -1,0 +1,22 @@
+{
+	"name": "@obralog/shared-types",
+	"version": "1.0.0",
+	"description": "Shared TypeScript types for ObraLog",
+	"main": "dist/index.js",
+	"types": "dist/index.d.ts",
+	"files": [
+		"dist"
+	],
+	"scripts": {
+		"build": "tsc",
+		"type-check": "tsc --noEmit"
+	},
+	"dependencies": {
+		"react": "^18.3.1"
+	},
+	"devDependencies": {
+		"@types/react": "^18.3.3",
+		"typescript": "^5.2.2"
+	},
+	"private": true
+}
