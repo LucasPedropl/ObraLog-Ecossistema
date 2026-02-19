@@ -1,0 +1,52 @@
+{
+	"version": "0.2.0",
+	"configurations": [
+		{
+			"name": "Next.js: Debug Server-side",
+			"type": "node-terminal",
+			"request": "launch",
+			"command": "pnpm --filter web dev",
+			"serverReadyAction": {
+				"pattern": "- Local:.+(https?://.+)",
+				"uriFormat": "%s",
+				"action": "debugWithChrome"
+			}
+		},
+		{
+			"name": "Next.js: Debug Client-side",
+			"type": "chrome",
+			"request": "launch",
+			"url": "http://localhost:3000",
+			"webRoot": "${workspaceFolder}/apps/web"
+		},
+		{
+			"name": "Next.js: Debug Full Stack",
+			"type": "node-terminal",
+			"request": "launch",
+			"command": "pnpm --filter web dev",
+			"serverReadyAction": {
+				"pattern": "- Local:.+(https?://.+)",
+				"uriFormat": "%s",
+				"action": "debugWithChrome"
+			},
+			"console": "integratedTerminal"
+		},
+		{
+			"name": "Expo: Debug Mobile",
+			"type": "node-terminal",
+			"request": "launch",
+			"command": "pnpm --filter mobile start",
+			"console": "integratedTerminal"
+		}
+	],
+	"compounds": [
+		{
+			"name": "Debug All Apps",
+			"configurations": [
+				"Next.js: Debug Server-side",
+				"Expo: Debug Mobile"
+			],
+			"stopAll": true
+		}
+	]
+}
