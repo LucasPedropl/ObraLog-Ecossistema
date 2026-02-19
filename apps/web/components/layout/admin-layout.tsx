@@ -28,6 +28,7 @@ import { constructionService } from '@/services';
 import { ConstructionSite } from '@/lib/types';
 import { cn } from '@/lib/utils';
 import Link from 'next/link';
+import { SimpleTooltip } from '../ui/simple-tooltip';
 
 const RAW_SETTINGS_MENUS = [
 	{
@@ -311,32 +312,37 @@ export function AdminLayout({ children }: { children: React.ReactNode }) {
 					{navItems.map((item) => {
 						const isActive = pathname === item.path;
 						return (
-							<button
+							<SimpleTooltip
 								key={item.path}
-								onClick={() => handlePrimaryNavigate(item.path)}
-								className={cn(
-									'group relative w-full flex items-center px-4 py-3 rounded-lg transition-all hover:bg-white/5',
-									isPrimaryCollapsed
-										? 'md:justify-center'
-										: 'space-x-3',
-								)}
-								style={getSidebarItemStyle(isActive)}
-								title={
-									isPrimaryCollapsed ? item.label : undefined
-								}
+								text={item.label}
+								enabled={isPrimaryCollapsed && !isMobileOpen}
+								side="right"
 							>
-								<item.icon className="h-5 w-5 flex-shrink-0" />
-								<span
+								<button
+									onClick={() =>
+										handlePrimaryNavigate(item.path)
+									}
 									className={cn(
-										'whitespace-nowrap',
-										isPrimaryCollapsed && !isMobileOpen
-											? 'md:hidden'
-											: 'block',
+										'group relative w-full flex items-center px-4 py-3 rounded-lg transition-all hover:bg-white/5',
+										isPrimaryCollapsed
+											? 'md:justify-center'
+											: 'space-x-3',
 									)}
+									style={getSidebarItemStyle(isActive)}
 								>
-									{item.label}
-								</span>
-							</button>
+									<item.icon className="h-5 w-5 flex-shrink-0" />
+									<span
+										className={cn(
+											'whitespace-nowrap',
+											isPrimaryCollapsed && !isMobileOpen
+												? 'md:hidden'
+												: 'block',
+										)}
+									>
+										{item.label}
+									</span>
+								</button>
+							</SimpleTooltip>
 						);
 					})}
 
@@ -354,43 +360,46 @@ export function AdminLayout({ children }: { children: React.ReactNode }) {
 							</p>
 							<div className="space-y-1">
 								{sites.map((site) => (
-									<button
+									<SimpleTooltip
 										key={site.id}
-										onClick={() =>
-											handlePrimaryNavigate(
-												`/admin/obra/${site.id}`,
-											)
+										text={site.name}
+										enabled={
+											isPrimaryCollapsed && !isMobileOpen
 										}
-										className={cn(
-											'group relative w-full flex items-center px-4 py-2 rounded-lg transition-all hover:bg-white/5',
-											isPrimaryCollapsed
-												? 'md:justify-center'
-												: 'space-x-3',
-										)}
-										style={getSidebarItemStyle(
-											pathname.startsWith(
-												`/admin/obra/${site.id}`,
-											),
-										)}
-										title={
-											isPrimaryCollapsed
-												? site.name
-												: undefined
-										}
+										side="right"
 									>
-										<FolderDot className="h-4 w-4 flex-shrink-0" />
-										<span
+										<button
+											onClick={() =>
+												handlePrimaryNavigate(
+													`/admin/obras/${site.id}/overview`,
+												)
+											}
 											className={cn(
-												'whitespace-nowrap text-sm truncate',
-												isPrimaryCollapsed &&
-													!isMobileOpen
-													? 'md:hidden'
-													: 'block',
+												'group relative w-full flex items-center px-4 py-2 rounded-lg transition-all hover:bg-white/5',
+												isPrimaryCollapsed
+													? 'md:justify-center'
+													: 'space-x-3',
+											)}
+											style={getSidebarItemStyle(
+												pathname.startsWith(
+													`/admin/obras/${site.id}`,
+												),
 											)}
 										>
-											{site.name}
-										</span>
-									</button>
+											<FolderDot className="h-4 w-4 flex-shrink-0" />
+											<span
+												className={cn(
+													'whitespace-nowrap text-sm truncate',
+													isPrimaryCollapsed &&
+														!isMobileOpen
+														? 'md:hidden'
+														: 'block',
+												)}
+											>
+												{site.name}
+											</span>
+										</button>
+									</SimpleTooltip>
 								))}
 							</div>
 						</div>
@@ -408,33 +417,38 @@ export function AdminLayout({ children }: { children: React.ReactNode }) {
 								opacity: 0.12,
 							}}
 						/>
-						<button
-							onClick={() =>
-								handlePrimaryNavigate('/admin/settings')
-							}
-							className={cn(
-								'group relative w-full flex items-center px-4 py-3 rounded-lg transition-all hover:bg-white/5',
-								isPrimaryCollapsed
-									? 'md:justify-center'
-									: 'space-x-3',
-							)}
-							style={getSidebarItemStyle(
-								pathname === '/admin/settings',
-							)}
-							title={isPrimaryCollapsed ? 'Aparência' : undefined}
+						<SimpleTooltip
+							text="Aparência"
+							enabled={isPrimaryCollapsed && !isMobileOpen}
+							side="right"
 						>
-							<Settings className="h-5 w-5 flex-shrink-0" />
-							<span
+							<button
+								onClick={() =>
+									handlePrimaryNavigate('/admin/settings')
+								}
 								className={cn(
-									'whitespace-nowrap',
-									isPrimaryCollapsed && !isMobileOpen
-										? 'md:hidden'
-										: 'block',
+									'group relative w-full flex items-center px-4 py-3 rounded-lg transition-all hover:bg-white/5',
+									isPrimaryCollapsed
+										? 'md:justify-center'
+										: 'space-x-3',
+								)}
+								style={getSidebarItemStyle(
+									pathname === '/admin/settings',
 								)}
 							>
-								Aparência
-							</span>
-						</button>
+								<Settings className="h-5 w-5 flex-shrink-0" />
+								<span
+									className={cn(
+										'whitespace-nowrap',
+										isPrimaryCollapsed && !isMobileOpen
+											? 'md:hidden'
+											: 'block',
+									)}
+								>
+									Aparência
+								</span>
+							</button>
+						</SimpleTooltip>
 					</div>
 				)}
 			</aside>

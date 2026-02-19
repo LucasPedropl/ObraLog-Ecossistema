@@ -4,19 +4,16 @@ import { useState } from 'react';
 import { useAuth } from '@/contexts/auth-context';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import {
-	Card,
-	CardHeader,
-	CardTitle,
-	CardContent,
-	CardDescription,
-} from '@/components/ui/card';
+import { AuthLayout } from '@/components/layout/auth-layout';
+import { useTheme } from '@/contexts/theme-context';
 
 export default function LoginPage() {
 	const { login, loginWithGoogle, loading } = useAuth();
+	const { currentTheme } = useTheme();
 	const [email, setEmail] = useState('');
 	const [password, setPassword] = useState('');
 	const [error, setError] = useState('');
+	const [isGoogleLoading, setIsGoogleLoading] = useState(false);
 
 	const handleLogin = async (e: React.FormEvent) => {
 		e.preventDefault();
@@ -30,6 +27,7 @@ export default function LoginPage() {
 
 	const handleGoogleLogin = async () => {
 		setError('');
+		setIsGoogleLoading(true);
 		try {
 			await loginWithGoogle();
 		} catch (err: unknown) {
@@ -38,76 +36,144 @@ export default function LoginPage() {
 					? err.message
 					: 'Falha no login com Google',
 			);
+		} finally {
+			setIsGoogleLoading(false);
 		}
 	};
 
 	return (
-		<div className="flex min-h-screen items-center justify-center bg-gray-100 dark:bg-zinc-950 p-4">
-			<Card className="w-full max-w-md">
-				<CardHeader className="text-center space-y-2">
-					<CardTitle className="text-3xl font-extrabold">
-						ObraLog
-					</CardTitle>
-					<CardDescription>
-						Faça login para acessar o sistema
-					</CardDescription>
-				</CardHeader>
-				<CardContent className="space-y-6">
-					<form onSubmit={handleLogin} className="space-y-4">
-						{error && (
-							<div className="bg-destructive/15 text-destructive p-3 rounded-md text-sm text-center">
-								{error}
-							</div>
-						)}
-						<div className="space-y-2">
-							<Input
-								type="email"
-								placeholder="Email"
-								value={email}
-								onChange={(e) => setEmail(e.target.value)}
-								required
-								disabled={loading}
-							/>
-							<Input
-								type="password"
-								placeholder="Senha"
-								value={password}
-								onChange={(e) => setPassword(e.target.value)}
-								required
-								disabled={loading}
-							/>
-						</div>
-						<Button
-							type="submit"
-							className="w-full"
-							disabled={loading}
-						>
-							{loading ? 'Entrando...' : 'Entrar'}
-						</Button>
-					</form>
-
-					<div className="relative">
-						<div className="absolute inset-0 flex items-center">
-							<span className="w-full border-t" />
-						</div>
-						<div className="relative flex justify-center text-xs uppercase">
-							<span className="bg-card px-2 text-muted-foreground">
-								Ou continue com
-							</span>
-						</div>
+		<AuthLayout>
+			<form onSubmit={handleLogin} className="space-y-4">
+				{error && (
+					<div className="bg-destructive/15 text-destructive p-3 rounded-md text-sm text-center">
+						{error}
 					</div>
+				)}
+				<div className="space-y-4">
+					<div>
+						<label
+							className="block text-sm font-medium mb-1"
+							style={{ color: currentTheme.colors.text }}
+						>
+							Email Corporativo
+						</label>
+						<Input
+							type="email"
+							placeholder="nome@empresa.com"
+							value={email}
+							onChange={(e) => setEmail(e.target.value)}
+							required
+							disabled={loading}
+							style={{
+								backgroundColor: currentTheme.isDark
+									? `${currentTheme.colors.background}80`
+									: '#fff',
+								borderColor: currentTheme.colors.border,
+								color: currentTheme.colors.text,
+							}}
+						/>
+					</div>
+					<div>
+						<label
+							className="block text-sm font-medium mb-1"
+							style={{ color: currentTheme.colors.text }}
+						>
+							Senha
+						</label>
+						<Input
+							type="password"
+							placeholder="••••••••"
+							value={password}
+							onChange={(e) => setPassword(e.target.value)}
+							required
+							disabled={loading}
+							style={{
+								backgroundColor: currentTheme.isDark
+									? `${currentTheme.colors.background}80`
+									: '#fff',
+								borderColor: currentTheme.colors.border,
+								color: currentTheme.colors.text,
+							}}
+						/>
+					</div>
+				</div>
 
-					<Button
-						variant="outline"
-						type="button"
-						className="w-full"
-						onClick={handleGoogleLogin}
-						disabled={loading}
+				<div className="flex items-center">
+					<input
+						id="remember-me"
+						name="remember-me"
+						type="checkbox"
+						className="h-4 w-4 rounded border-gray-300 focus:ring-brand-500"
+						style={{
+							borderColor: currentTheme.colors.border,
+						}}
+					/>
+					<label
+						htmlFor="remember-me"
+						className="ml-2 block text-sm"
+						style={{
+							color: currentTheme.colors.textSecondary,
+						}}
 					>
-						Google
-					</Button>
-				</CardContent>
-			</Card>
-		</div>
+						Lembrar dispositivo
+					</label>
+				</div>
+
+				<Button
+					type="submit"
+					className="w-full"
+					disabled={loading}
+					style={{
+						backgroundColor: currentTheme.colors.primary,
+						color: '#fff',
+					}}
+				>
+					{loading ? 'Entrando...' : 'Entrar no Sistema'}
+				</Button>
+			</form>
+
+			<div className="relative my-6">
+				<div className="absolute inset-0 flex items-center">
+					<span
+						className="w-full border-t"
+						style={{ borderColor: currentTheme.colors.border }}
+					/>
+				</div>
+				<div className="relative flex justify-center text-xs uppercase">
+					<span
+						className="px-2"
+						style={{
+							backgroundColor: currentTheme.colors.card,
+							color: currentTheme.colors.textSecondary,
+						}}
+					>
+						Ou continue com
+					</span>
+				</div>
+			</div>
+
+			<Button
+				variant="outline"
+				type="button"
+				className="w-full"
+				onClick={handleGoogleLogin}
+				disabled={loading || isGoogleLoading}
+				style={{
+					borderColor: currentTheme.colors.border,
+					color: currentTheme.colors.text,
+				}}
+			>
+				{isGoogleLoading ? 'Entrando...' : 'Google'}
+			</Button>
+
+			<div className="mt-6 text-center">
+				<p
+					className="text-xs"
+					style={{ color: currentTheme.colors.textSecondary }}
+				>
+					Problemas com acesso? Contate o suporte
+				</p>
+			</div>
+		</AuthLayout>
 	);
 }

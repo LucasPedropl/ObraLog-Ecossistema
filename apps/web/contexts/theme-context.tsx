@@ -38,30 +38,51 @@ export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({
 		}
 	};
 
-	// Prevent hydration mismatch
-	if (!mounted) {
-		return <>{children}</>;
-	}
+	useEffect(() => {
+		const root = document.documentElement;
 
-	// Apply CSS variables or handle theme application logic here if needed
-	// For now, consumers use currentTheme to style themselves inline or via JS
-	// ideally we map this to CSS variables on body.
+		// Update CSS variables
+		root.style.setProperty('--background', currentTheme.colors.background);
+		root.style.setProperty('--foreground', currentTheme.colors.text);
+		root.style.setProperty('--card', currentTheme.colors.card);
+		root.style.setProperty('--card-foreground', currentTheme.colors.text);
+		root.style.setProperty('--popover', currentTheme.colors.card);
+		root.style.setProperty(
+			'--popover-foreground',
+			currentTheme.colors.text,
+		);
+		root.style.setProperty('--primary', currentTheme.colors.primary);
+		// Assuming primary foreground is white for dark primary, and black for light primary usually
+		// But for now let's keep it simple or calculate contrast if needed
+		// root.style.setProperty('--primary-foreground', '#ffffff');
+
+		root.style.setProperty('--secondary', currentTheme.colors.sidebar); // Using sidebar color as secondary for now? Or keep default
+		root.style.setProperty('--border', currentTheme.colors.border);
+		root.style.setProperty('--input', currentTheme.colors.border);
+		root.style.setProperty('--ring', currentTheme.colors.primary);
+
+		// Custom variables
+		root.style.setProperty('--sidebar', currentTheme.colors.sidebar);
+		root.style.setProperty(
+			'--sidebar-text',
+			currentTheme.colors.sidebarText,
+		);
+
+		if (currentTheme.isDark) {
+			root.classList.add('dark');
+		} else {
+			root.classList.remove('dark');
+		}
+	}, [currentTheme]);
+
+	// Prevent hydration mismatch
+	// if (!mounted) {
+	// 	return <>{children}</>;
+	// }
 
 	return (
 		<ThemeContext.Provider value={{ currentTheme, setTheme }}>
-			<div
-				style={
-					{
-						'--theme-bg': currentTheme.colors.background,
-						'--theme-sidebar': currentTheme.colors.sidebar,
-						'--theme-sidebar-text': currentTheme.colors.sidebarText,
-						'--theme-primary': currentTheme.colors.primary,
-						// ... map others to CSS variables
-					} as React.CSSProperties
-				}
-			>
-				{children}
-			</div>
+			{children}
 		</ThemeContext.Provider>
 	);
 };
