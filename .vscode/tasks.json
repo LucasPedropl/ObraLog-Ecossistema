@@ -2,14 +2,97 @@
 	"version": "2.0.0",
 	"tasks": [
 		{
-			"label": "Run Dev Server",
+			"label": "Dev: All Apps",
 			"type": "shell",
 			"command": "pnpm dev",
 			"isBackground": true,
-			"problemMatcher": [
-				"$tsc-watch"
-			],
+			"problemMatcher": ["$tsc-watch"],
+			"group": {
+				"kind": "build",
+				"isDefault": true
+			},
+			"presentation": {
+				"reveal": "always",
+				"panel": "dedicated"
+			}
+		},
+		{
+			"label": "Dev: Web",
+			"type": "shell",
+			"command": "pnpm --filter web dev",
+			"isBackground": true,
+			"problemMatcher": ["$tsc-watch"],
+			"group": "build",
+			"presentation": {
+				"reveal": "always",
+				"panel": "dedicated"
+			}
+		},
+		{
+			"label": "Dev: Mobile",
+			"type": "shell",
+			"command": "pnpm --filter mobile start",
+			"isBackground": true,
+			"problemMatcher": [],
+			"group": "build",
+			"presentation": {
+				"reveal": "always",
+				"panel": "dedicated"
+			}
+		},
+		{
+			"label": "Dev: React",
+			"type": "shell",
+			"command": "pnpm --filter react dev",
+			"isBackground": true,
+			"problemMatcher": ["$tsc-watch"],
+			"group": "build",
+			"presentation": {
+				"reveal": "always",
+				"panel": "dedicated"
+			}
+		},
+		{
+			"label": "Build: All",
+			"type": "shell",
+			"command": "pnpm build",
+			"problemMatcher": ["$tsc"],
+			"group": "build"
+		},
+		{
+			"label": "Build: Web",
+			"type": "shell",
+			"command": "pnpm --filter web build",
+			"problemMatcher": ["$tsc"],
+			"group": "build"
+		},
+		{
+			"label": "Lint: All",
+			"type": "shell",
+			"command": "pnpm lint",
+			"problemMatcher": ["$eslint-stylish"],
 			"group": "test"
+		},
+		{
+			"label": "Format: All",
+			"type": "shell",
+			"command": "pnpm format",
+			"problemMatcher": [],
+			"group": "none"
+		},
+		{
+			"label": "Install Dependencies",
+			"type": "shell",
+			"command": "pnpm install",
+			"problemMatcher": [],
+			"group": "none"
+		},
+		{
+			"label": "Clean & Reinstall",
+			"type": "shell",
+			"command": "pnpm clean && pnpm install",
+			"problemMatcher": [],
+			"group": "none"
 		}
 	]
 }

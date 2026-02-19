@@ -1,4 +1,54 @@
 {
 	"json.schemaDownload.enable": true,
-	"http.proxyStrictSSL": false
+	"http.proxyStrictSSL": false,
+	"commentTranslate.hover.enabled": true,
+
+	// Editor
+	"editor.formatOnSave": true,
+	"editor.defaultFormatter": "esbenp.prettier-vscode",
+	"editor.codeActionsOnSave": {
+		"source.fixAll.eslint": "explicit"
+	},
+
+	// Files
+	"files.exclude": {
+		"**/.git": true,
+		"**/.turbo": true,
+		"**/node_modules": true,
+		"**/.next": true,
+		"**/dist": true,
+		"**/build": true
+	},
+
+	// Search
+	"search.exclude": {
+		"**/node_modules": true,
+		"**/dist": true,
+		"**/build": true,
+		"**/.next": true,
+		"**/pnpm-lock.yaml": true
+	},
+
+	// TypeScript
+	"typescript.tsdk": "node_modules/typescript/lib",
+	"typescript.enablePromptUseWorkspaceTsdk": true,
+	"typescript.preferences.importModuleSpecifier": "relative",
+
+	// ESLint
+	"eslint.validate": [
+		"javascript",
+		"javascriptreact",
+		"typescript",
+		"typescriptreact"
+	],
+
+	// TailwindCSS
+	"tailwindCSS.experimental.classRegex": [
+		["cn\\(([^)]*)\\)", "[\"'`]([^\"'`]*).*?[\"'`]"]
+	],
+
+	// File associations
+	"files.associations": {
+		"*.css": "tailwindcss"
+	}
 }
